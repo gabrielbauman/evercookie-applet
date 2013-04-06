@@ -18,7 +18,7 @@ public class EvercookieApplet extends Applet {
 
 	private static final long serialVersionUID = 1L;
 
-	private Properties data;
+	private final Properties data;
 
 	EvercookieBackend backend = new EvercookieJnlpBackend();
 
@@ -38,7 +38,7 @@ public class EvercookieApplet extends Applet {
 		this.window = JSObject.getWindow(this);
 
 		if (backend.isAvailable()) {
-			this.data = backend.load();
+			backend.load(data);
 			System.out.println("Initialization complete. Cache has " + this.data.size() + " entries.");
 		}
 

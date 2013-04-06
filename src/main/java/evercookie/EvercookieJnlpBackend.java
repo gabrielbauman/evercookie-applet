@@ -39,8 +39,7 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 	}
 
 	@Override
-	public void save(Properties values) {
-
+	public void save(final Properties values) {
 		try {
 			FileContents file = persistenceService.get(this.codebaseUrl);
 			ObjectOutputStream os = new ObjectOutputStream(file.getOutputStream(true));
@@ -56,40 +55,33 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
-	public Properties load() {
-
-		Properties result = null;
+	public void load(final Properties data) {
+		data.clear();
 		try {
 			FileContents file = persistenceService.get(codebaseUrl);
 			ObjectInputStream os = new ObjectInputStream(file.getInputStream());
 			try {
-				result = (Properties) os.readObject();
+				((Properties) os.readObject()).putAll(data);
 			} finally {
 				os.close();
 			}
 		} catch (FileNotFoundException e) {
 			System.err.println("Cache does not exist. Initializing.");
 			this.initialize();
-			result = new Properties();
-			this.save(result);
+			this.save(data);
 		} catch (ClassNotFoundException e) {
 			System.err.println("Cache found but incompatible. Overwriting.");
-			result = new Properties();
-			this.save(result);
+			this.save(data);
 		} catch (EOFException e) {
 			System.err.println("Cache exists but has no header. Overwriting.");
-			result = new Properties();
-			this.save(result);
+			this.save(data);
 		} catch (Exception e) {
 			System.err.println("Unable to load cached data.");
 			e.printStackTrace();
 		}
-
-		return result;
 	}
 
 	@Override
@@ -102,6 +94,9 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 		}
 	}
 
+	/**
+	 * This creates the "file" that cookie data is stored in.
+	 */
 	private void initialize() {
 
 		try {
@@ -110,7 +105,6 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 		} catch (Exception e) {
 			System.err.println("Unable to initialize cache.");
 			e.printStackTrace();
-			System.exit(0);
 		}
 
 	}

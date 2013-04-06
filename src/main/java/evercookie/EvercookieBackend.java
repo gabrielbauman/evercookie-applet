@@ -8,7 +8,7 @@ public interface EvercookieBackend {
 
 	void save(Properties values);
 
-	Properties load();
+	void load(Properties data);
 
 	void cleanup();
 

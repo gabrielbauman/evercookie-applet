@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+  <script src="http://www.java.com/js/deployJava.js"></script>
+  <script> 
+    var attributes = {id: 'EvercookieApplet', style: 'position:absolute; top:-3000px; left:-3000px;'} ; 
+    var parameters = {jnlp_href: './evercookie.jnlp'} ; 
+    deployJava.runApplet(attributes, parameters, '1.6'); 
+  </script>
+  <p>
+    To see if the applet is ready,
+    <button onclick="alert(EvercookieApplet.isReady());">Click here</button>
+  </p>
+</body>
+</html>

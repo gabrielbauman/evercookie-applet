@@ -20,7 +20,7 @@ public class EvercookieApplet extends Applet {
 
 	private Properties data;
 
-	EvercookieBackend backend = new EvercookieJndiBackend();
+	EvercookieBackend backend = new EvercookieJnlpBackend();
 
 	@SuppressWarnings("unused")
 	private JSObject window;

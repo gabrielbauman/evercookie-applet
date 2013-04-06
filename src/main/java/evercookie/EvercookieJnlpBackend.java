@@ -13,13 +13,13 @@ import javax.jnlp.PersistenceService;
 import javax.jnlp.ServiceManager;
 import javax.jnlp.UnavailableServiceException;
 
-public class EvercookieJndiBackend implements EvercookieBackend {
+public class EvercookieJnlpBackend implements EvercookieBackend {
 
 	private boolean isAvailable = true;
 	private PersistenceService persistenceService = null;
 	private URL codebaseUrl;
 
-	public EvercookieJndiBackend() {
+	public EvercookieJnlpBackend() {
 		super();
 		try {
 			BasicService basicService = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
@@ -28,7 +28,7 @@ public class EvercookieJndiBackend implements EvercookieBackend {
 			this.isAvailable = true;
 
 		} catch (UnavailableServiceException e) {
-			System.err.println("Failed to load JNDI services: " + e.getMessage());
+			System.err.println("Failed to load JNLP services: " + e.getMessage());
 			this.isAvailable = false;
 		}
 	}

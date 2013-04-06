@@ -1,16 +1,14 @@
 package evercookie;
 
+import java.util.Properties;
+
 public interface EvercookieBackend {
 
 	boolean initialize();
 
-	void set(String name, String value);
+	void save(Properties values);
 
-	void get(String name);
-
-	boolean contains(String name);
-
-	void clear();
+	Properties load();
 
 	void cleanup();
 

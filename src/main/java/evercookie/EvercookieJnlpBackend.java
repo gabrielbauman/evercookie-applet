@@ -81,7 +81,7 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 			result = new Properties();
 			this.save(result);
 		} catch (EOFException e) {
-			System.err.println("Cache exists but has no header.");
+			System.err.println("Cache exists but has no header. Overwriting.");
 			result = new Properties();
 			this.save(result);
 		} catch (Exception e) {

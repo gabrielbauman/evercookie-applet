@@ -4,7 +4,7 @@ import java.util.Properties;
 
 public interface EvercookieBackend {
 
-	boolean initialize();
+	boolean isAvailable();
 
 	void save(Properties values);
 

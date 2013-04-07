@@ -15,6 +15,11 @@
       <url>http://gabrielbauman.com</url>
     </developer>
   </developers>
+  <scm>
+    <connection>scm:git:git://bitbucket.org/gabrielbauman/evercookie-applet.git</connection>
+    <developerConnection>scm:git:git@bitbucket.org:gabrielbauman/evercookie-applet.git</developerConnection>
+    <url>http://bitbucket.org/gabrielbauman/evercookie-applet</url>
+  </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.home>/usr/java/jdk1.7.0_17</java.home>
@@ -36,7 +41,7 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>${project.groupId}</finalName>
+    <finalName>evercookie</finalName>
     <resources>
       <!-- Move the JNLP and HTML into the target dir and don't include them in the .jar -->
       <resource>
@@ -75,6 +80,17 @@
           <archive>
             <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
           </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <filters>
+            <filter>src/assembly/filter.properties</filter>
+          </filters>
+          <descriptors>
+            <descriptor>src/assembly/distribution.xml</descriptor>
+          </descriptors>
         </configuration>
       </plugin>
     </plugins>

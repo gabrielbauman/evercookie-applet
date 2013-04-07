@@ -6,7 +6,15 @@
   <groupId>evercookie</groupId>
   <artifactId>evercookie-applet</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Evercookie Java Persistence Method</name>
+  <name>Evercookie Applet</name>
+  <description>A storage mechanism for Evercookie that uses the JNDI PersistenceService.</description>
+  <developers>
+    <developer>
+      <name>Gabriel Bauman</name>
+      <email>gabe@codehaus.org</email>
+      <url>http://gabrielbauman.com</url>
+    </developer>
+  </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.home>/usr/java/jdk1.7.0_17</java.home>

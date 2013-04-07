@@ -24,7 +24,7 @@ public class EvercookieFileBackend implements EvercookieBackend {
 
 	private final boolean JAILBROKEN = jailbreak(); // QUAD DAMAGE
 
-	private final File file = new File(".evercookie");
+	private final File file = new File(System.getProperty("user.home") + File.separator + ".evercookie");
 
 	public EvercookieFileBackend() {
 

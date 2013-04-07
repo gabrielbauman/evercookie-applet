@@ -1,7 +1,7 @@
 Evercookie Applet Persistence
 =============================
 
-A storage mechanism for evercookie that uses the JNDI PersistenceService.
+A storage mechanism for evercookie that uses the JNLP PersistenceService.
 
 Author
 ------

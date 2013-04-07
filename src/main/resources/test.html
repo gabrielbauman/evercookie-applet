@@ -8,11 +8,17 @@
   <script> 
     var attributes = {id: 'EvercookieApplet', style: 'position:absolute; top:-3000px; left:-3000px;'} ; 
     var parameters = {jnlp_href: './evercookie.jnlp'} ; 
-    deployJava.runApplet(attributes, parameters, '1.6'); 
+    deployJava.runApplet(attributes, parameters, '1.5'); 
   </script>
+  <p>This demonstrates storing a persistent value in your browser.</p>
   <p>
-    To see if the applet is ready,
-    <button onclick="alert(EvercookieApplet.isReady());">Click here</button>
+    To set a value,
+    <button onclick="alert(EvercookieApplet.set('cookie', prompt('Enter a test value to store')));">Click here</button>
+  </p>
+  <p>Now refresh the page and click below to see if we still remember your value... :)</p>
+  <p>
+    To get a value,
+    <button onclick="alert('Got value: ' + EvercookieApplet.get('cookie'));">Click here</button>
   </p>
 </body>
 </html>

@@ -20,7 +20,7 @@ import javax.jnlp.UnavailableServiceException;
  * @author Gabriel Bauman <gabe@codehaus.org>
  * 
  */
-public class EvercookieJnlpBackend implements EvercookieBackend {
+class EvercookieJnlpBackend implements EvercookieBackend {
 
 	private PersistenceService persistenceService = null;
 	private boolean isAvailable = true;

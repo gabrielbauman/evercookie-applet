@@ -8,7 +8,7 @@ import java.util.Properties;
  * @author Gabriel Bauman <gabe@codehaus.org>
  * 
  */
-public interface EvercookieBackend {
+interface EvercookieBackend {
 
 	boolean isAvailable();
 

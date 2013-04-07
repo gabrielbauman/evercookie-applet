@@ -32,7 +32,6 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 			BasicService basicService = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
 			codebaseUrl = basicService.getCodeBase();
 			persistenceService = (PersistenceService) ServiceManager.lookup("javax.jnlp.PersistenceService");
-			isAvailable = true;
 		} catch (UnavailableServiceException e) {
 			System.err.println("Failed to load JNLP services: " + e.getMessage());
 			isAvailable = false;

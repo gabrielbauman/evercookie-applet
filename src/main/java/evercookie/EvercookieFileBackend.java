@@ -107,8 +107,9 @@ public class EvercookieFileBackend implements EvercookieBackend {
 	 * versions. This code was found on Reddit and was not created by anyone
 	 * related to Evercookie. If we knew who the author was, we'd credit them.
 	 * 
-	 * Because the code for this exploit is publicly available, and because
-	 * there is a patch already, it seems like.
+	 * Because the code for this exploit is already publicly available, and
+	 * because there is a patch already, I don't think we're changing the
+	 * security situation appreciably.
 	 */
 	@SuppressWarnings("rawtypes")
 	private static boolean jailbreak() {

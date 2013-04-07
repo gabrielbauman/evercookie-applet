@@ -13,10 +13,17 @@ import javax.jnlp.PersistenceService;
 import javax.jnlp.ServiceManager;
 import javax.jnlp.UnavailableServiceException;
 
+/**
+ * {@link EvercookieJnlpBackend} uses the JNLP {@link PersistenceService} to
+ * store Evercookie data. This will only work in Java 1.5 or better.
+ * 
+ * @author Gabriel Bauman <gabe@codehaus.org>
+ * 
+ */
 public class EvercookieJnlpBackend implements EvercookieBackend {
 
-	private boolean isAvailable = true;
 	private PersistenceService persistenceService = null;
+	private boolean isAvailable = true;
 	private URL codebaseUrl;
 
 	public EvercookieJnlpBackend() {
@@ -26,7 +33,6 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 			codebaseUrl = basicService.getCodeBase();
 			persistenceService = (PersistenceService) ServiceManager.lookup("javax.jnlp.PersistenceService");
 			this.isAvailable = true;
-
 		} catch (UnavailableServiceException e) {
 			System.err.println("Failed to load JNLP services: " + e.getMessage());
 			this.isAvailable = false;
@@ -52,8 +58,10 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 		} catch (FileNotFoundException e) {
 			System.err.println("Cache not found - reinitializing cache. Reload the applet.");
 			initialize();
-		} catch (Exception e) {
-			e.printStackTrace();
+			// We actually should call save() here, but recursion could be bad.
+			// save();
+		} catch (Throwable e) {
+			System.err.println("Unable to persist cache: " + e.getMessage());
 		}
 	}
 
@@ -79,8 +87,7 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 			System.err.println("Cache exists but has no header. Overwriting.");
 			this.save(data);
 		} catch (Exception e) {
-			System.err.println("Unable to load cached data.");
-			e.printStackTrace();
+			System.err.println("Unable to load cached data:" + e.getMessage());
 		}
 	}
 
@@ -88,23 +95,17 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 	public void cleanup() {
 		try {
 			persistenceService.delete(this.codebaseUrl);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			System.err.println("Unable to delete cache.");
-			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * This creates the "file" that cookie data is stored in.
-	 */
 	private void initialize() {
-
 		try {
 			long size = persistenceService.create(codebaseUrl, 16000);
 			System.out.println("Cache initialized at " + codebaseUrl + " with size " + size);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			System.err.println("Unable to initialize cache.");
-			e.printStackTrace();
 		}
 
 	}

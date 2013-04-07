@@ -36,6 +36,7 @@
           <include>*.html</include>
           <include>*.jnlp</include>
         </includes>
+        <filtering>true</filtering>
         <directory>src/main/resources</directory>
         <targetPath>../</targetPath>
       </resource>
@@ -56,8 +57,8 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.5</source>
+          <target>1.5</target>
         </configuration>
       </plugin>
       <plugin>

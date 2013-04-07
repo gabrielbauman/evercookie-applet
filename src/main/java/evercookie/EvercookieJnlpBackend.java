@@ -39,12 +39,10 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 		}
 	}
 
-	@Override
 	public boolean isAvailable() {
 		return isAvailable;
 	}
 
-	@Override
 	public void save(final Properties values) {
 		try {
 			FileContents file = persistenceService.get(codebaseUrl);
@@ -64,7 +62,6 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 		}
 	}
 
-	@Override
 	public void load(final Properties data) {
 		data.clear();
 		try {
@@ -90,7 +87,6 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 		}
 	}
 
-	@Override
 	public void cleanup() {
 		try {
 			persistenceService.delete(codebaseUrl);

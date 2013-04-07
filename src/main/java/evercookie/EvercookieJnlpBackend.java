@@ -32,22 +32,22 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 			BasicService basicService = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
 			codebaseUrl = basicService.getCodeBase();
 			persistenceService = (PersistenceService) ServiceManager.lookup("javax.jnlp.PersistenceService");
-			this.isAvailable = true;
+			isAvailable = true;
 		} catch (UnavailableServiceException e) {
 			System.err.println("Failed to load JNLP services: " + e.getMessage());
-			this.isAvailable = false;
+			isAvailable = false;
 		}
 	}
 
 	@Override
 	public boolean isAvailable() {
-		return this.isAvailable;
+		return isAvailable;
 	}
 
 	@Override
 	public void save(final Properties values) {
 		try {
-			FileContents file = persistenceService.get(this.codebaseUrl);
+			FileContents file = persistenceService.get(codebaseUrl);
 			ObjectOutputStream os = new ObjectOutputStream(file.getOutputStream(true));
 			try {
 				os.writeObject(values);
@@ -58,8 +58,7 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 		} catch (FileNotFoundException e) {
 			System.err.println("Cache not found - reinitializing cache. Reload the applet.");
 			initialize();
-			// We actually should call save() here, but recursion could be bad.
-			// save();
+			save(values); // recursion. This could be bad if things get wonky.
 		} catch (Throwable e) {
 			System.err.println("Unable to persist cache: " + e.getMessage());
 		}
@@ -78,14 +77,14 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 			}
 		} catch (FileNotFoundException e) {
 			System.err.println("Cache does not exist. Initializing.");
-			this.initialize();
-			this.save(data);
+			initialize();
+			save(data);
 		} catch (ClassNotFoundException e) {
 			System.err.println("Cache found but incompatible. Overwriting.");
-			this.save(data);
+			save(data);
 		} catch (EOFException e) {
 			System.err.println("Cache exists but has no header. Overwriting.");
-			this.save(data);
+			save(data);
 		} catch (Exception e) {
 			System.err.println("Unable to load cached data:" + e.getMessage());
 		}
@@ -94,7 +93,7 @@ public class EvercookieJnlpBackend implements EvercookieBackend {
 	@Override
 	public void cleanup() {
 		try {
-			persistenceService.delete(this.codebaseUrl);
+			persistenceService.delete(codebaseUrl);
 		} catch (Throwable e) {
 			System.err.println("Unable to delete cache.");
 		}

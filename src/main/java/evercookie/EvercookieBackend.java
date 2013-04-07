@@ -2,6 +2,12 @@ package evercookie;
 
 import java.util.Properties;
 
+/**
+ * A common interface for persistent storage backends.
+ * 
+ * @author Gabriel Bauman <gabe@codehaus.org>
+ * 
+ */
 public interface EvercookieBackend {
 
 	boolean isAvailable();

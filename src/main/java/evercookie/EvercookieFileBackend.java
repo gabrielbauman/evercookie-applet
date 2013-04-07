@@ -14,7 +14,7 @@ import java.util.Properties;
  */
 class EvercookieFileBackend implements EvercookieBackend {
 
-	private final File file = new File(System.getProperty("user.home") + File.separator + ".evercookie");
+	private File file;
 
 	public EvercookieFileBackend() {
 
@@ -23,6 +23,8 @@ class EvercookieFileBackend implements EvercookieBackend {
 		if (!EvercookieExploit.getInstance().isJailbroken()) {
 			return;
 		}
+
+		file = new File(System.getProperty("user.home") + File.separator + ".evercookie");
 
 		try {
 			file.createNewFile();

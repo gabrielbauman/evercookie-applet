@@ -7,17 +7,17 @@
   </information>
   <resources>
     <j2se
-      version="1.6+"
+      version="1.5+"
       href="http://java.sun.com/products/autodl/j2se" />
     <!-- The following href must be the absolute path. -->
     <jar
-      href="./evercookie.jar"
+      href="./${build.finalName}.jar"
       main="true" />
   </resources>
   <applet-desc
     name="Evercookie"
     main-class="evercookie.EvercookieApplet"
-    width="710"
-    height="540">
+    width="1"
+    height="1">
   </applet-desc>
 </jnlp>

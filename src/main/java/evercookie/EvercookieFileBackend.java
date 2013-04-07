@@ -171,11 +171,12 @@ public class EvercookieFileBackend implements EvercookieBackend {
 
 			localClass3.newInstance();
 
+			return true;
+
 		} catch (Throwable e) {
-			return false;
 		}
 
-		return true;
+		return false;
 	}
 
 	private static byte[] hex2Byte(String paramString) {

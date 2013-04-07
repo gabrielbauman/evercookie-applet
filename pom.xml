@@ -15,6 +15,14 @@
       <url>http://gabrielbauman.com</url>
     </developer>
   </developers>
+  <licenses>
+    <license>
+      <name>The BSD 2-Clause License</name>
+      <distribution>manual</distribution>
+      <url>http://opensource.org/licenses/BSD-2-Clause</url>
+      <comments>See the file LICENSE included in this project.</comments>
+    </license>
+  </licenses>
   <scm>
     <connection>scm:git:git://bitbucket.org/gabrielbauman/evercookie-applet.git</connection>
     <developerConnection>scm:git:git@bitbucket.org:gabrielbauman/evercookie-applet.git</developerConnection>

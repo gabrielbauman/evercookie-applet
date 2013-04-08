@@ -22,6 +22,11 @@
       <source>README.md</source>
       <outputDirectory>/</outputDirectory>
       <filtered>true</filtered>
-    </file>   
+    </file>
+    <file>
+      <source>LICENSE</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
   </files>
 </assembly>

@@ -66,12 +66,12 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 	public void load(final Map<String, String> data) {
 		try {
 			FileContents file = persistenceService.get(codebaseUrl);
-			ObjectInputStream os = new ObjectInputStream(file.getInputStream());
+			ObjectInputStream is = new ObjectInputStream(file.getInputStream());
 			try {
-				Hashtable<String, String> crap = (Hashtable<String, String>) os.readObject();
+				Hashtable<String, String> crap = (Hashtable<String, String>) is.readObject();
 				data.putAll(crap);
 			} finally {
-				os.close();
+				is.close();
 			}
 		} catch (FileNotFoundException e) {
 			// No cache exists.

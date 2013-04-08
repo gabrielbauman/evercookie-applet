@@ -99,6 +99,15 @@
             <descriptor>src/assembly/distribution.xml</descriptor>
           </descriptors>
         </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>

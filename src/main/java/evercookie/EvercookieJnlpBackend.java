@@ -34,7 +34,7 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 			codebaseUrl = basicService.getCodeBase();
 			persistenceService = (PersistenceService) ServiceManager.lookup("javax.jnlp.PersistenceService");
 		} catch (UnavailableServiceException e) {
-			System.err.println("Failed to load JNLP services: " + e.getMessage());
+			// JNLP services not available. We're dead in the water.
 			isAvailable = false;
 		}
 	}
@@ -51,15 +51,14 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 				os.writeObject(values);
 				os.flush();
 			} finally {
-				System.out.println("Saved properties: " + values.toString());
 				os.close();
 			}
 		} catch (FileNotFoundException e) {
-			System.err.println("Cache not found - reinitializing.");
 			initialize();
 			save(values); // recursion. This could be bad if things get wonky.
 		} catch (Throwable e) {
-			System.err.println("Unable to persist cache: " + e.getMessage());
+			// Cache not saved for some reason.
+			e.printStackTrace();
 		}
 	}
 
@@ -75,17 +74,17 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 				os.close();
 			}
 		} catch (FileNotFoundException e) {
-			System.err.println("Cache does not exist. Initializing.");
+			// No cache exists.
 			initialize();
 			save(data);
 		} catch (ClassNotFoundException e) {
-			System.err.println("Cache found but incompatible. Overwriting.");
+			// Cache found but incompatible. Overwrite it.
 			save(data);
 		} catch (EOFException e) {
-			System.err.println("Cache exists but has no header. Overwriting.");
+			// Cache exists but has no header. Overwrite it.
 			save(data);
-		} catch (Exception e) {
-			System.err.println("Unable to load cached data:" + e.getMessage());
+		} catch (Throwable e) {
+			// Something wonky happened.
 			e.printStackTrace();
 		}
 	}
@@ -94,7 +93,7 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 		try {
 			persistenceService.delete(codebaseUrl);
 		} catch (Throwable e) {
-			System.err.println("Unable to delete cache.");
+			// Cache didn't exist in the first place.
 		}
 	}
 
@@ -103,6 +102,7 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 			long size = persistenceService.create(codebaseUrl, 16000);
 			System.out.println("Cache initialized at " + codebaseUrl + " with size " + size);
 		} catch (Throwable e) {
+			// We're screwed.
 			System.err.println("Unable to initialize cache.");
 		}
 

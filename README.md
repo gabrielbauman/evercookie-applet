@@ -5,9 +5,9 @@
 A Java applet implementing a storage mechanism for Evercookie that uses
 several methods to store persistent cookie data in a browser. 
 
-evercookie-applet was written by [Gabriel Bauman][6] and binaries are included
-in the [official Evercookie distribution][4]. You can find out more about
-Evercookie [here][3].
+evercookie-applet was written by [Gabriel Bauman][6] and binaries will soon be
+included in the [official Evercookie distribution][2]. You can find out more
+about Evercookie [here][3].
 
 ## How does it work?
  

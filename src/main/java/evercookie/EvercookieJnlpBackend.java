@@ -84,7 +84,7 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 			// Cache exists but has no header. Overwrite it.
 			save(data);
 		} catch (Throwable e) {
-			// Something wonky happened.
+			// You will not go to space today.
 			e.printStackTrace();
 		}
 	}
@@ -93,7 +93,7 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 		try {
 			persistenceService.delete(codebaseUrl);
 		} catch (Throwable e) {
-			// Cache didn't exist in the first place.
+			// Cache didn't exist in the first place, but so what?
 		}
 	}
 

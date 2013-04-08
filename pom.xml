@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>evercookie</groupId>
   <artifactId>evercookie-applet</artifactId>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
   <name>Evercookie Applet</name>
   <description>A storage mechanism for Evercookie that uses the JNLP PersistenceService.</description>
   <developers>

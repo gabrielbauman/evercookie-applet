@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.Properties;
+import java.util.Hashtable;
+import java.util.Map;
 
 import javax.jnlp.BasicService;
 import javax.jnlp.FileContents;
@@ -42,7 +43,7 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 		return isAvailable;
 	}
 
-	public void save(final Properties values) {
+	public void save(final Map<String, String> values) {
 		try {
 			FileContents file = persistenceService.get(codebaseUrl);
 			ObjectOutputStream os = new ObjectOutputStream(file.getOutputStream(true));
@@ -50,10 +51,11 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 				os.writeObject(values);
 				os.flush();
 			} finally {
+				System.out.println("Saved properties: " + values.toString());
 				os.close();
 			}
 		} catch (FileNotFoundException e) {
-			System.err.println("Cache not found - reinitializing cache. Reload the applet.");
+			System.err.println("Cache not found - reinitializing.");
 			initialize();
 			save(values); // recursion. This could be bad if things get wonky.
 		} catch (Throwable e) {
@@ -61,13 +63,14 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 		}
 	}
 
-	public void load(final Properties data) {
-		data.clear();
+	@SuppressWarnings("unchecked")
+	public void load(final Map<String, String> data) {
 		try {
 			FileContents file = persistenceService.get(codebaseUrl);
 			ObjectInputStream os = new ObjectInputStream(file.getInputStream());
 			try {
-				((Properties) os.readObject()).putAll(data);
+				Hashtable<String, String> crap = (Hashtable<String, String>) os.readObject();
+				data.putAll(crap);
 			} finally {
 				os.close();
 			}
@@ -83,6 +86,7 @@ class EvercookieJnlpBackend implements EvercookieBackend {
 			save(data);
 		} catch (Exception e) {
 			System.err.println("Unable to load cached data:" + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 

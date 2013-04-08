@@ -13,12 +13,16 @@
   <p>This demonstrates storing a persistent value in your browser.</p>
   <p>
     To set a value,
-    <button onclick="alert(EvercookieApplet.set('cookie', prompt('Enter a test value to store')));">Click here</button>
+    <button onclick="EvercookieApplet.set('cookie', prompt('Enter a test value to store'));">Click here</button>
   </p>
   <p>Now refresh the page and click below to see if we still remember your value... :)</p>
   <p>
     To get a value,
     <button onclick="alert('Got value: ' + EvercookieApplet.get('cookie'));">Click here</button>
+  </p>
+  <p>
+    To remove all traces of the applet's persistent cache:
+    <button onclick="EvercookieApplet.cleanup();">Click here</button>
   </p>
 </body>
 </html>

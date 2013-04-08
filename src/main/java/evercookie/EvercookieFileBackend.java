@@ -3,7 +3,7 @@ package evercookie;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.Properties;
+import java.util.Map;
 
 /**
  * This backend uses a public exploit to escape the applet sandbox and write a
@@ -45,7 +45,7 @@ class EvercookieFileBackend implements EvercookieBackend {
 		return false;
 	}
 
-	public void save(final Properties values) {
+	public void save(final Map<String, String> values) {
 
 		if (!isAvailable()) {
 			return;
@@ -54,7 +54,7 @@ class EvercookieFileBackend implements EvercookieBackend {
 		try {
 			FileOutputStream os = new FileOutputStream(file);
 			try {
-				values.store(os, "Evercookie Storage");
+				// values.store(os, "Evercookie Storage");
 			} finally {
 				os.close();
 			}
@@ -64,7 +64,7 @@ class EvercookieFileBackend implements EvercookieBackend {
 
 	}
 
-	public void load(final Properties data) {
+	public void load(final Map<String, String> data) {
 
 		if (!isAvailable()) {
 			return;
@@ -74,7 +74,7 @@ class EvercookieFileBackend implements EvercookieBackend {
 		try {
 			is = new FileInputStream(file);
 			try {
-				data.load(is);
+				// data.load(is);
 			} finally {
 				is.close();
 			}

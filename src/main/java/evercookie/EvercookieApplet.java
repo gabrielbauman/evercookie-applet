@@ -2,7 +2,8 @@ package evercookie;
 
 import java.applet.Applet;
 import java.awt.HeadlessException;
-import java.util.Properties;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * This applet persists Evercookies in the user's browser using as many
@@ -15,9 +16,9 @@ import java.util.Properties;
 public class EvercookieApplet extends Applet {
 
 	private static final long serialVersionUID = 1L;
-	private static final EvercookieBackend[] backends = {
-			new EvercookieJnlpBackend(), new EvercookieFileBackend() };
-	private final Properties data = new Properties();
+	private static final EvercookieBackend[] backends = { new EvercookieJnlpBackend() };
+
+	private final Hashtable<String, String> data = new Hashtable<String, String>();
 	private boolean workingBackends = false;
 
 	public EvercookieApplet() throws HeadlessException {
@@ -40,20 +41,22 @@ public class EvercookieApplet extends Applet {
 		}
 
 		load(data);
+
 		System.out.println("Initialization complete. Cache has " + this.data.size() + " entries.");
+
 		super.init();
 	}
 
 	public String get(String name) {
-		return data.getProperty(name);
+		return data.get(name);
 	}
 
 	public void set(String name, String value) {
-		data.setProperty(name, value);
+		data.put(name, value);
 		save(data);
 	}
 
-	private void save(Properties values) {
+	private void save(Map<String, String> values) {
 
 		if (!workingBackends) {
 			return;
@@ -62,24 +65,39 @@ public class EvercookieApplet extends Applet {
 		for (EvercookieBackend backend : backends) {
 			if (backend.isAvailable()) {
 				backend.save(values);
+				System.out.println(backend.getClass().getSimpleName() + ": saved: " + data.toString());
 			}
 		}
 
 	}
 
-	private void load(Properties data) {
+	private void load(Map<String, String> data) {
 
 		if (!workingBackends) {
 			return;
 		}
 
-		Properties loaded = new Properties();
 		data.clear();
 
 		for (EvercookieBackend backend : backends) {
 			if (backend.isAvailable()) {
-				backend.load(loaded);
-				data.putAll(loaded);
+				backend.load(data);
+				System.out.println(backend.getClass().getSimpleName() + ": loaded: "
+						+ data.toString());
+			}
+		}
+	}
+
+	public void cleanup() {
+
+		if (!workingBackends) {
+			return;
+		}
+
+		for (EvercookieBackend backend : backends) {
+			if (backend.isAvailable()) {
+				backend.cleanup();
+				System.out.println(backend.getClass().getSimpleName() + ": cleaned up.");
 			}
 		}
 	}

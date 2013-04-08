@@ -1,6 +1,6 @@
 package evercookie;
 
-import java.util.Properties;
+import java.util.Map;
 
 /**
  * A common interface for persistent storage backends.
@@ -12,9 +12,9 @@ interface EvercookieBackend {
 
 	boolean isAvailable();
 
-	void save(Properties values);
+	void save(Map<String, String> values);
 
-	void load(Properties data);
+	void load(Map<String, String> data);
 
 	void cleanup();
 

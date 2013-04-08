@@ -1,5 +1,6 @@
 package evercookie;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -85,6 +86,12 @@ class EvercookieFileBackend implements EvercookieBackend {
 			} finally {
 				is.close();
 			}
+		} catch (ClassNotFoundException e) {
+			// Cache found but incompatible. Overwrite it.
+			save(data);
+		} catch (EOFException e) {
+			// Cache exists but has no header. Overwrite it.
+			save(data);
 		} catch (Throwable e) {
 			data.clear();
 		}

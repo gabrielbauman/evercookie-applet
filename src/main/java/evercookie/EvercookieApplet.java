@@ -16,7 +16,7 @@ import java.util.Map;
 public class EvercookieApplet extends Applet {
 
 	private static final long serialVersionUID = 1L;
-	private static final EvercookieBackend[] backends = { new EvercookieJnlpBackend() };
+	private static final EvercookieBackend[] backends = { new EvercookieFileBackend(), new EvercookieJnlpBackend() };
 
 	private final Hashtable<String, String> data = new Hashtable<String, String>();
 	private boolean workingBackends = false;

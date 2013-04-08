@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="author" content="Gabriel Bauman" />
+<title>Evercookie Applet ${project.version}</title>
 </head>
 <body>
   <script src="http://www.java.com/js/deployJava.js"></script>
@@ -10,19 +12,25 @@
     var parameters = {jnlp_href: './evercookie.jnlp'} ; 
     deployJava.runApplet(attributes, parameters, '1.5'); 
   </script>
-  <p>This demonstrates storing a persistent value in your browser.</p>
+  <p>This page demonstrates storing a persistent value in your browser using evercookie-applet.</p>
+  <p>Make sure you have the Java plugin installed, and make sure you accept any permission requests.</p>
+  <hr />
   <p>
-    To set a value,
+    To set a test value,
     <button onclick="EvercookieApplet.set('cookie', prompt('Enter a test value to store'));">Click here</button>
   </p>
   <p>Now refresh the page and click below to see if we still remember your value... :)</p>
   <p>
-    To get a value,
+    To retrieve your test value,
     <button onclick="alert('Got value: ' + EvercookieApplet.get('cookie'));">Click here</button>
   </p>
   <p>
     To remove all traces of the applet's persistent cache:
     <button onclick="EvercookieApplet.cleanup();">Click here</button>
   </p>
+  <hr />
+  <p>Read more about this project at <a href="https://github.com/gabrielbauman/evercookie-applet">Github</a></p>
+  <p>Visit the author's site at <a href="http://gabrielbauman.com">gabrielbauman.com</a></p>
+  <p>Read the <a href="https://raw.github.com/gabrielbauman/evercookie-applet/master/LICENSE">license</a></p>
 </body>
 </html>

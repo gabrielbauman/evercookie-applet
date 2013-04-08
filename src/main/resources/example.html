@@ -6,11 +6,24 @@
 <title>Evercookie Applet ${project.version}</title>
 </head>
 <body>
-  <script src="http://www.java.com/js/deployJava.js"></script>
+  <script src="http://www.java.com/js/dtjava.js"></script>
   <script> 
-    var attributes = {id: 'EvercookieApplet', style: 'position:absolute; top:-3000px; left:-3000px;'} ; 
-    var parameters = {jnlp_href: './evercookie.jnlp'} ; 
-    deployJava.runApplet(attributes, parameters, '1.5'); 
+  function appletReady(id) {
+    //console.log("The applet is ready: " + id);
+    }
+  function embedApplet() {
+    dtjava.embed(
+            {         id: "EvercookieApplet",
+                     url: "evercookie.jnlp",
+                   width: "1px",
+                  height: "1px",
+                  placeholder: "applet"
+            },
+            {},
+            { onJavascriptReady: appletReady }
+    );
+  }
+  dtjava.addOnloadCallback(embedApplet);
   </script>
   <p>This page demonstrates storing a persistent value in your browser using evercookie-applet.</p>
   <p>Make sure you have the Java plugin installed, and make sure you accept any permission requests.</p>
@@ -29,8 +42,15 @@
     <button onclick="EvercookieApplet.cleanup();">Click here</button>
   </p>
   <hr />
-  <p>Read more about this project at <a href="https://github.com/gabrielbauman/evercookie-applet">Github</a></p>
-  <p>Visit the author's site at <a href="http://gabrielbauman.com">gabrielbauman.com</a></p>
-  <p>Read the <a href="https://raw.github.com/gabrielbauman/evercookie-applet/master/LICENSE">license</a></p>
+  <p>
+    Read more about this project at <a href="https://github.com/gabrielbauman/evercookie-applet">Github</a>
+  </p>
+  <p>
+    Visit the author's site at <a href="http://gabrielbauman.com">gabrielbauman.com</a>
+  </p>
+  <p>
+    Read the <a href="https://raw.github.com/gabrielbauman/evercookie-applet/master/LICENSE">license</a>
+  </p>
+  <div id="applet"><!-- Applet gets injected here! --></div>
 </body>
 </html>

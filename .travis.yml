@@ -2,5 +2,4 @@ language: java
 jdk: 
   - oraclejdk7
   - openjdk7
-  - openjdk6
-before-script: mvn help:active-profiles
+before_install: mvn help:active-profiles

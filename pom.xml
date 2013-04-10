@@ -30,7 +30,6 @@
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.home>/usr/java/latest</java.home>
   </properties>
   <dependencies>
     <dependency>
@@ -38,7 +37,7 @@
       <artifactId>jnlp</artifactId>
       <version>1.7</version>
       <scope>system</scope>
-      <systemPath>${java.home}/jre/lib/javaws.jar</systemPath>
+      <systemPath>${env.JAVA_HOME}/jre/lib/javaws.jar</systemPath>
     </dependency>    
   </dependencies>
   <build>
@@ -114,17 +113,17 @@
     </plugins>
   </build>
   <profiles>
-    <!-- Set java.home automatically when building on Travis CI -->
     <profile>
-      <id>travis</id>
+      <id>java-home-undefined</id>
       <activation>
         <activeByDefault>false</activeByDefault>
         <file>
-          <exists>/usr/lib/jvm/java-7-oracle</exists>
+          <missing>${env.JAVA_HOME}</missing>
         </file>
       </activation>
       <properties>
-        <java.home>/usr/lib/jvm/java-7-oracle</java.home>
+        <!-- If you're unwilling to set JAVA_HOME on your system, change this to point to your JDK. -->
+        <env.JAVA_HOME>/usr/java/default</env.JAVA_HOME>
       </properties>
     </profile>
   </profiles>

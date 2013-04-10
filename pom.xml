@@ -30,7 +30,7 @@
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.home>/usr/java/default</java.home>
+    <java.home>/usr/java/latest</java.home>
   </properties>
   <dependencies>
     <dependency>
@@ -38,8 +38,8 @@
       <artifactId>jnlp</artifactId>
       <version>1.7</version>
       <scope>system</scope>
-      <systemPath>${java.home}/sample/jnlp/servlet/jnlp.jar</systemPath>
-    </dependency>
+      <systemPath>${java.home}/jre/lib/javaws.jar</systemPath>
+    </dependency>    
   </dependencies>
   <build>
     <resources>

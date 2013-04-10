@@ -31,15 +31,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  <dependencies>
-    <dependency>
-      <groupId>javax.jnlp</groupId>
-      <artifactId>jnlp</artifactId>
-      <version>1.7</version>
-      <scope>system</scope>
-      <systemPath>${env.JAVA_HOME}/jre/lib/javaws.jar</systemPath>
-    </dependency>    
-  </dependencies>
   <build>
     <resources>
       <!-- Move the JNLP and HTML into the target dir and don't include them in the .jar -->
@@ -113,18 +104,42 @@
     </plugins>
   </build>
   <profiles>
+    <!-- If JAVA_HOME doesn't point to an Oracle JDK, build with netx JNLP. -->
     <profile>
-      <id>java-home-undefined</id>
+      <id>jnlp-netx</id>
       <activation>
         <activeByDefault>false</activeByDefault>
         <file>
-          <missing>${env.JAVA_HOME}</missing>
+          <missing>${env.JAVA_HOME}/jre/lib/javaws.jar</missing>
         </file>
       </activation>
-      <properties>
-        <!-- If you're unwilling to set JAVA_HOME on your system, change this to point to your JDK. -->
-        <env.JAVA_HOME>/usr/java/default</env.JAVA_HOME>
-      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>org.jvnet.hudson</groupId>
+          <artifactId>netx</artifactId>
+          <version>0.5-hudson-2</version>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <!-- If JAVA_HOME does point to an Oracle JDK, build with Oracle JNLP. -->
+    <profile>
+      <id>jnlp-oracle</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <file>
+          <exists>${env.JAVA_HOME}/jre/lib/javaws.jar</exists>
+        </file>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>javax.jnlp</groupId>
+          <artifactId>jnlp</artifactId>
+          <version>1.7</version>
+          <scope>system</scope>
+          <systemPath>${env.JAVA_HOME}/jre/lib/javaws.jar</systemPath>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 </project>

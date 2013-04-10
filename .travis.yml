@@ -5,4 +5,8 @@ jdk:
   - openjdk7
 
 before_script:
-  - mvn help:active-profiles | grep -v INFO | grep -v Download | uniq
+  - mvn help:active-profiles | sed -u -e 's/^\[.*\] //g' -e 's/^Download.*$//g' | uniq
+
+script: mvn test | sed -u -e 's/^\[.*\] //g' -e 's/ ---$/ ---\r\n/g' -e 's/^[a-z].*$//g' -e 's/^----.*$//g' -e 's/^Download.*$//g' | uniq
+
+# We heavily clean up Maven's spammy output with sed.

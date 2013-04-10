@@ -1,4 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>evercookie</groupId>
   <artifactId>evercookie-applet</artifactId>
@@ -27,16 +30,9 @@
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.home>/usr/java/jdk1.7.0_17</java.home>
+    <java.home>/usr/java/default</java.home>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>sun.plugin</groupId>
-      <artifactId>plugin</artifactId>
-      <version>1.7</version>
-      <scope>system</scope>
-      <systemPath>${java.home}/jre/lib/plugin.jar</systemPath>
-    </dependency>
     <dependency>
       <groupId>javax.jnlp</groupId>
       <artifactId>jnlp</artifactId>
@@ -76,6 +72,8 @@
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
+          <!-- Suppress compiler warnings about proprietary APIs -->
+          <compilerArgument>-XDignore.symbol.file</compilerArgument>
         </configuration>
       </plugin>
       <plugin>
@@ -115,4 +113,19 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <!-- Set java.home automatically when building on Travis CI -->
+    <profile>
+      <id>travis</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <file>
+          <exists>/usr/lib/jvm/java-7-oracle</exists>
+        </file>
+      </activation>
+      <properties>
+        <java.home>/usr/lib/jvm/java-7-oracle</java.home>
+      </properties>
+    </profile>
+  </profiles>
 </project>

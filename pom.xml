@@ -64,6 +64,9 @@
           <target>1.5</target>
           <!-- Suppress compiler warnings about proprietary APIs -->
           <compilerArgument>-XDignore.symbol.file</compilerArgument>
+          <!-- Don't include debug information in compiled binaries -->
+          <debug>true</debug>
+          <debuglevel>none</debuglevel>
         </configuration>
       </plugin>
       <plugin>
@@ -100,6 +103,26 @@
           <localCheckout>true</localCheckout>
           <pushChanges>false</pushChanges>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <version>1.9</version>
+        <configuration>
+          <signature>
+            <groupId>org.codehaus.mojo.signature</groupId>
+            <artifactId>java15</artifactId>
+            <version>1.0</version>
+          </signature>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -142,4 +165,12 @@
       </dependencies>
     </profile>
   </profiles>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>animal-sniffer-annotations</artifactId>
+      <version>1.9</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 </project>

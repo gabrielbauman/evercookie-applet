@@ -117,7 +117,7 @@
         </configuration>
         <executions>
           <execution>
-            <phase>package</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>check</goal>
             </goals>

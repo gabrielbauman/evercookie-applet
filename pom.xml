@@ -99,6 +99,8 @@
         <configuration>
           <localCheckout>true</localCheckout>
           <pushChanges>false</pushChanges>
+          <!-- Space separated list of goals to apply on release:perform. -->
+          <goals>validate</goals>
         </configuration>
       </plugin>
       <plugin>

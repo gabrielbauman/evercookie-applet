@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/gabrielbauman/evercookie-applet.png?branch=master)](http://travis-ci.org/gabrielbauman/evercookie-applet)
+
 # Java Applet Persistence for Evercookie
 
 ## What's this?

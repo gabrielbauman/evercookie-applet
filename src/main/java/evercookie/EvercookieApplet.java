@@ -26,11 +26,12 @@ public class EvercookieApplet extends Applet {
         for (String className : new String[]{"evercookie.EvercookieJnlpBackend", "evercookie.EvercookieFileBackend"}) {
             try {
                 Class klass = Class.forName(className);
-                if (klass.isAssignableFrom(EvercookieBackend.class)) {
+                System.out.println("Loaded: " + className);
+                if (EvercookieBackend.class.isAssignableFrom(klass)) {
                     backends.add((EvercookieBackend) klass.newInstance());
                 }
             } catch (ClassNotFoundException e) {
-                System.err.println("Backend not available in this build: " + className);
+                System.err.println("Unavailable: " + className);
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

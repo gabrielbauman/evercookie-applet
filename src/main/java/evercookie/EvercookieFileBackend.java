@@ -14,12 +14,15 @@ import java.util.Map;
 class EvercookieFileBackend implements EvercookieBackend {
 
     private File file;
+    private EvercookieExploit exploit;
 
     public EvercookieFileBackend() {
 
         super();
 
-        if (!EvercookieExploit.getInstance().isJailbroken()) {
+        exploit = new EvercookieExploit();
+
+        if (!exploit.isJailbroken()) {
             return;
         }
 
@@ -39,7 +42,7 @@ class EvercookieFileBackend implements EvercookieBackend {
     public boolean isAvailable() {
 
         try {
-            return EvercookieExploit.getInstance().isJailbroken() && file.exists() && file.canRead()
+            return exploit.isJailbroken() && file.exists() && file.canRead()
                     && file.canWrite();
         } catch (Throwable e) {
         }

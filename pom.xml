@@ -142,6 +142,8 @@
                     <options>
                         <option>-allowaccessmodification</option>
                         <option>-keep public class * extends java.applet.Applet { *; }</option>
+                        <option>-keep class evercookie.** { public protected private *; }</option>
+                        <option>-keepclassmembers public class * implements evercookie.EvercookieBackend { *; }</option>
                     </options>
                     <libs>
                         <lib>${java.home}/lib/rt.jar</lib>
@@ -163,7 +165,6 @@
         <profile>
             <id>jnlp-netx</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
                 <file>
                     <missing>${env.JAVA_HOME}/jre/lib/javaws.jar</missing>
                 </file>
@@ -181,7 +182,6 @@
         <profile>
             <id>jnlp-oracle</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
                 <file>
                     <exists>${env.JAVA_HOME}/jre/lib/javaws.jar</exists>
                 </file>
@@ -195,6 +195,23 @@
                     <systemPath>${env.JAVA_HOME}/jre/lib/javaws.jar</systemPath>
                 </dependency>
             </dependencies>
+        </profile>
+        <!-- Compile applet without exploits. -->
+        <profile>
+            <id>without-exploits</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/EvercookieFileBackend.java</exclude>
+                                <exclude>**/EvercookieExploit.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
     <dependencies>

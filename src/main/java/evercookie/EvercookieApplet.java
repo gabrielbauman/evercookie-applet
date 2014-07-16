@@ -2,6 +2,7 @@ package evercookie;
 
 import java.applet.Applet;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -15,10 +16,28 @@ import java.util.Map;
 public class EvercookieApplet extends Applet {
 
     private static final long serialVersionUID = 1L;
-    private static final EvercookieBackend[] backends = {new EvercookieFileBackend(), new EvercookieJnlpBackend()};
-
+    private static final java.util.List<EvercookieBackend> backends;
     private final Hashtable<String, String> data = new Hashtable<String, String>();
     private boolean workingBackends = false;
+
+    static {
+        backends = new ArrayList<EvercookieBackend>();
+
+        for (String className : new String[]{"evercookie.EvercookieJnlpBackend", "evercookie.EvercookieFileBackend"}) {
+            try {
+                Class klass = Class.forName(className);
+                if (klass.isAssignableFrom(EvercookieBackend.class)) {
+                    backends.add((EvercookieBackend) klass.newInstance());
+                }
+            } catch (ClassNotFoundException e) {
+                System.err.println("Backend not available in this build: " + className);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public EvercookieApplet() throws HeadlessException {
         super();
@@ -26,6 +45,11 @@ public class EvercookieApplet extends Applet {
 
     @Override
     public void init() {
+
+        if (backends.size() < 1) {
+            System.err.println("Initialization failed. No backends available.");
+            return;
+        }
 
         for (EvercookieBackend backend : backends) {
             if (backend.isAvailable()) {
@@ -35,7 +59,7 @@ public class EvercookieApplet extends Applet {
         }
 
         if (!workingBackends) {
-            System.out.println("Initialization failed. No working backends.");
+            System.err.println("Initialization failed. No working backends.");
             return;
         }
 
